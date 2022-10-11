@@ -1,5 +1,4 @@
 import os
-from Player import Player
 import colorama
 from colorama import Fore, Back, Style
 
