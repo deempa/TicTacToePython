@@ -1,21 +1,19 @@
 import os
-
+from Player import Player
 import colorama
 from colorama import Fore, Back, Style
 
 colorama.init(autoreset=True)
 
-HEIGHT = 7
-WIDTH = 7
-SEQUENCE_NEED = 5
+HEIGHT = 3
+WIDTH = 3
+SEQUENCE_NEED = 3
 X = 'X'
 O = 'O'
 
 
 def main():
-
-    print(Back.GREEN + Fore.BLACK + "WELCOME TO THE GAME OF TIC-TAC-TEO")
-    print()
+    welcome()
     board = boardInit(HEIGHT, WIDTH)
     player1 = X
     player2 = O
@@ -40,33 +38,26 @@ def main():
 
             player_choice = int(player_choice)
 
-        os.system("clear") # Clear the screen
-
-        print(Back.GREEN + Fore.BLACK + "WELCOME TO THE GAME OF TIC-TAC-TEO")
+        welcome()
 
         updateBoard(board, player_choice // HEIGHT, player_choice % WIDTH, who_is_turn)
 
         # Check if someone won after the last move
         if checkIfWin(board, player_choice // HEIGHT, player_choice % WIDTH, who_is_turn):
-            os.system("clear")
-            print(Back.GREEN + Fore.BLACK + "WELCOME TO THE GAME OF TIC-TAC-TEO")
-            print()
-            print("The winner is %s" % who_is_turn)
+            welcome()
             printBoard(board)
-            print()
+            print(Back.WHITE + Fore.BLACK + "\nThe winner is %s ! " % who_is_turn)
+            goodBye()
             break
 
         # Check if Tie
         if boardIsFull(board):
-            print("Tie Game! Goodbye.")
-            print()
+            print("Tie Game! ")
+            goodBye()
             break
 
         # Change the turn for the next player
-        if who_is_turn == player1:
-            who_is_turn = player2
-        else:
-            who_is_turn = player1
+        who_is_turn = switchTurn(who_is_turn, player1, player2)
 
 
 def boardInit(width, height):
@@ -85,7 +76,6 @@ def printBoard(board):
 
 
 def updateBoard(board, x, y, symbol):
-    print()
     board[x][y] = symbol
     printBoard(board)
 
@@ -168,7 +158,6 @@ def checkIfRightDiagonalWin(board, x, y, symbol):
 
 
 def boardIsFull(board):
-    print()
     for i in range(HEIGHT):
         for j in range(WIDTH):
             if board[i][j] != X and board[i][j] != O:
@@ -176,8 +165,21 @@ def boardIsFull(board):
     return True
 
 
+def switchTurn(who_is_turn, player1, player2):
+    if who_is_turn == player1:
+        return player2
+    return player1
+
+
+def welcome():
+    os.system("clear")
+    print(Back.GREEN + Fore.BLACK + " WELCOME TO THE GAME OF TIC-TAC-TEO \n")
+
+
+def goodBye():
+    print("\nThanks for playing my TIC-TAC-TEO game!")
+    print("See you next time.\n")
+
+
 if __name__ == '__main__':
     main()
-
-
-
